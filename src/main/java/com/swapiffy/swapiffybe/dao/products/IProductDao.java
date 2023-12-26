@@ -6,5 +6,6 @@ import com.swapiffy.swapiffybe.entity.Product;
 import java.util.List;
 
 public interface IProductDao extends IBaseDao {
-    public abstract List<Product> getProduct();
+    public abstract List<Product> getAllProduct();
+    public abstract Product getProduct(Long id);
 }

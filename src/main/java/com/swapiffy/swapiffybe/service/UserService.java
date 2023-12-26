@@ -29,11 +29,18 @@ public class UserService {
 
     public User authenticateUser(String email, String password) {
         IUserDao userDao = new UserDaoImpl();
-        User user = userDao.getUser(email);
+        User user = userDao.getUserByEmail(email);
 
         if (user == null || !user.getPassword().equals(password)) {
             return null;
         }
+        return user;
+    }
+
+    public User getUserById(long kullaniciId) {
+
+        IUserDao userDao = new UserDaoImpl();
+        User user = userDao.getUserById(kullaniciId);
         return user;
     }
 }

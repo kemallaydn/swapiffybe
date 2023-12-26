@@ -10,17 +10,19 @@ import com.swapiffy.swapiffybe.entity.User;
 import com.swapiffy.swapiffybe.entity.UserToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
+@Service
 public class ProductService {
     public List<Product> getAll() {
         IProductDao productDao =new ProductDaoImpl();
-        return productDao.getProduct();
-
-
-
+        return productDao.getAllProduct();
+    }
+    public Product FindById(Long id) {
+        IProductDao productDao =new ProductDaoImpl();
+        return productDao.getProduct(id);
     }
 }

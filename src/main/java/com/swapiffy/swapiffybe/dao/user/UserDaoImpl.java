@@ -4,7 +4,9 @@ import com.swapiffy.swapiffybe.dao.BaseDao;
 import com.swapiffy.swapiffybe.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class UserDaoImpl extends BaseDao implements IUserDao {
 
     @Override
@@ -24,13 +26,33 @@ public class UserDaoImpl extends BaseDao implements IUserDao {
         return user;
     }
     @Override
-    public User getUser(String email) {
+    public User getUserByEmail(String email) {
         EntityManager em = null;
         User user = null;
         try {
             em = openConnection();
             try {
-                user = (User) em.createNamedQuery("User.findById").setParameter("email", email).getSingleResult();
+                user = (User) em.createNamedQuery("User.findByEmail").setParameter("email", email).getSingleResult();
+            } catch (NoResultException nre) {
+                System.err.println(nre.toString());
+            }
+
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+        } finally {
+            closeConnection(em);
+        }
+        return user;
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        EntityManager em = null;
+        User user = null;
+        try {
+            em = openConnection();
+            try {
+                user = (User) em.createNamedQuery("User.findById").setParameter("id", id).getSingleResult();
             } catch (NoResultException nre) {
                 System.err.println(nre.toString());
             }

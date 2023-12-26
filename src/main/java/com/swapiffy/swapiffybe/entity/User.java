@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "\"user\"")
 @NamedQueries({
-        @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.email = :email")
+        @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email"),
+        @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id")
 })
 public class User {
     @Id

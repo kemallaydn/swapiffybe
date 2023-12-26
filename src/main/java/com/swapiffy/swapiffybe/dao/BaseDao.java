@@ -7,8 +7,9 @@ import java.util.logging.Logger;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public class BaseDao implements Serializable {
 
     private EntityManagerFactory FACTORY = null;

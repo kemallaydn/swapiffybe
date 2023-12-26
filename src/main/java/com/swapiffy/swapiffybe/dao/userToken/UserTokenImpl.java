@@ -3,8 +3,9 @@ package com.swapiffy.swapiffybe.dao.userToken;
 import com.swapiffy.swapiffybe.dao.BaseDao;
 import com.swapiffy.swapiffybe.entity.UserToken;
 import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public class UserTokenImpl extends BaseDao implements IUserTokenDao {
 
     @Override
