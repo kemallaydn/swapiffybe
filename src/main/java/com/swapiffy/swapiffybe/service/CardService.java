@@ -1,11 +1,14 @@
 package com.swapiffy.swapiffybe.service;
 
+
 import com.swapiffy.swapiffybe.dao.cart.CartDaoImpl;
 import com.swapiffy.swapiffybe.dao.cart.ICartDao;
 import com.swapiffy.swapiffybe.entity.Card;
 import com.swapiffy.swapiffybe.entity.Product;
 import com.swapiffy.swapiffybe.entity.User;
 import com.swapiffy.swapiffybe.entity.CardProduct;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +27,10 @@ public class CardService {
         this.cartDao= new CartDaoImpl();
 
     }
-    public List<CardProduct> runGetting(Long clinicianId,Long urunId){
+    public Card runGetting(Long kullaniciId){
 
-        Card clinicianSpeciational =    cartDao.updateCard(3,urunId,1L);
-        return  clinicianSpeciational.getSepetUrunList();
+        Card kullaniciSepetiOptional = cartDao.getCard(kullaniciId);
+        return  kullaniciSepetiOptional;
     }
     public List<CardProduct> sepeteUrunEkle(Long kullaniciId, Long urunId, int adet) {
         // Kullanıcıya ait sepeti bul
@@ -72,16 +75,39 @@ yeniUrun.setSepet(kullaniciSepeti);
     }
 
 
-    public void azaltUrunAdet(Long sepetId, Long urunId, int azaltilanAdet) {
+    public Card azaltUrunAdet(Long sepetId, Long urunId, int azaltilanAdet) {
         Card sepet = cartDao.getCard(sepetId);
         for (CardProduct sepetUrun : sepet.getSepetUrunList()) {
             if (sepetUrun.getUrun().getId().equals(urunId)) {
-                if (sepetUrun.getAdet() < azaltilanAdet) {
-                    throw new RuntimeException("Sepette yeterli ürün bulunmamaktadır.");
+
+                sepetUrun.setAdet(sepetUrun.getAdet() + azaltilanAdet);
+                if (sepetUrun.getAdet() == 0) {
+                    // Eğer ürünün adeti azaltılan adete eşitse ürünü listeden kaldır
+                    sepet.getSepetUrunList().remove(sepetUrun);
+                    cartDao.updateCard(sepetUrun.getId());
+                    Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
+                    return kullaniciSepetiOptional;
                 }
-                sepetUrun.setAdet(sepetUrun.getAdet() - azaltilanAdet);
                 cartDao.addCard(sepet);
-                return;
+                Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
+                return kullaniciSepetiOptional;
+            }
+        }
+
+        throw new RuntimeException("Belirtilen ürün sepetinizde bulunmamaktadır.");
+    }
+    @Transactional
+    public Card urunsil(Long sepetId, Long urunId, int azaltilanAdet) {
+        Card sepet = cartDao.getCard(sepetId);
+
+        Iterator<CardProduct> iterator = sepet.getSepetUrunList().iterator();
+        while (iterator.hasNext()) {
+            CardProduct sepetUrun = iterator.next();
+            if (sepetUrun.getUrun().getId().equals(urunId)) {
+                iterator.remove(); // Ürünü listeden kaldır
+                cartDao.updateCard(sepetUrun.getId());
+                Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
+                return kullaniciSepetiOptional;
             }
         }
 

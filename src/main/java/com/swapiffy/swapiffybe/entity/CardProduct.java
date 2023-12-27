@@ -9,7 +9,7 @@ import java.util.UUID;
 @Table(name = "cardproduct")
 @NamedQueries({
         @NamedQuery(name = "cardproduct.findById", query = "SELECT u FROM CardProduct u WHERE u.id = :id"),
-        @NamedQuery(name = "cardproduct.updateCardProduct", query = "UPDATE CardProduct u SET u.adet = :newStock WHERE u.urun.id = :id")
+        @NamedQuery(name = "cardproduct.delete", query = "DELETE FROM CardProduct u WHERE  u.id = :id")
 })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 

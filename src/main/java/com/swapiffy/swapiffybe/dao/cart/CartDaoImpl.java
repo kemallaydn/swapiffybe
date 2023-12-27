@@ -36,38 +36,29 @@ public class CartDaoImpl extends BaseDao implements ICartDao {
     }
 
     @Override
-    public Card updateCard(int newStock, Long id,Long userId) {
-        EntityManager em = null;
-        Card card = null;
+    public Card updateCard(Long id) {
+        EntityManager em = openTransactionalConnection();
+        Card card=null;
         try {
-            em = openTransactionalConnection();
-            try {
-
-                // Kullanıcının sepetindeki belirli ürünün bilgisini al
-                Query getCartItemQuery = em.createQuery("SELECT c FROM CardProduct c WHERE c.id = :userId AND c.id = :productId");
-                getCartItemQuery.setParameter("userId", userId);
-                getCartItemQuery.setParameter("productId", id);
-
-                Card cartItem = (Card) getCartItemQuery.getSingleResult();
-
-                // Ürün adetini güncelle
-                if (cartItem != null) {
-                    cartItem.getSepetUrunList().get(0).setAdet(newStock);
-                    em.merge(card);
-
+            if (em != null) {
+                // Silme işlemini gerçekleştir
+                CardProduct cardProduct = em.find(CardProduct.class, id);
+                if (cardProduct != null) {
+                   em.remove(cardProduct);
+                    em.getTransaction().commit();
+                    System.out.println("CardProduct deleted successfully.");
+                } else {
+                    System.out.println("CardProduct not found.");
                 }
-
-                commitTransaction(em);
-            } catch (NoResultException nre) {
-                System.err.println(nre.toString());
+            } else {
+                System.out.println("Failed to open transactional connection.");
             }
-
-        } catch (Exception ex) {
-            System.err.println(ex.toString());
         } finally {
-            closeConnection(em);
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
         }
-        return card;
+        return null;
     }
 
     @Override

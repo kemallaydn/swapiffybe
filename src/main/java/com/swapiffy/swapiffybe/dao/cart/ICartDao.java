@@ -6,7 +6,7 @@ import com.swapiffy.swapiffybe.entity.CardProduct;
 
 public interface ICartDao extends IBaseDao {
     public abstract Card getCard(Long uuid);
-    public abstract Card updateCard( int newStock, Long uuid,Long kullanci);
+    public abstract Card updateCard(Long uuid);
     public abstract void addCard(Card card);
 
 }
