@@ -7,9 +7,10 @@ import jakarta.persistence.*;
 import java.util.UUID;
 @Entity
 @Table(name = "cardproduct")
-@NamedQueries({
+@NamedQueries(value = {
         @NamedQuery(name = "cardproduct.findById", query = "SELECT u FROM CardProduct u WHERE u.id = :id"),
-        @NamedQuery(name = "cardproduct.delete", query = "DELETE FROM CardProduct u WHERE  u.id = :id")
+        @NamedQuery(name = "cardproduct.delete", query = "DELETE FROM CardProduct u WHERE  u.id = :id"),
+        @NamedQuery(name = "cardproduct.update", query = "UPDATE CardProduct u SET adet=:adet  WHERE  u.id = :id")
 })
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 

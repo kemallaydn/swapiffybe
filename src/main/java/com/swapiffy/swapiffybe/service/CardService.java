@@ -88,7 +88,7 @@ yeniUrun.setSepet(kullaniciSepeti);
                     Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
                     return kullaniciSepetiOptional;
                 }
-                cartDao.addCard(sepet);
+                cartDao.cardUpdate(sepetUrun);
                 Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
                 return kullaniciSepetiOptional;
             }

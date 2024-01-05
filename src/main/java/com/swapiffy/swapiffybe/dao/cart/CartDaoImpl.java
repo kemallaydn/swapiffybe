@@ -77,4 +77,20 @@ public class CartDaoImpl extends BaseDao implements ICartDao {
         }
 
     }
+    @Override
+    public  void cardUpdate(CardProduct card){
+        EntityManager em = null;
+        try {
+            em=openTransactionalConnection();
+            em.createNamedQuery("cardproduct.update").setParameter("adet", card.getAdet()).setParameter("id", card.getId()).executeUpdate();
+            commitTransaction(em);
+
+        } catch (Exception ex) {
+            rollbackTransaction(em);
+            throw ex;
+        } finally {
+            closeConnection(em);
+        }
+    }
+
 }
