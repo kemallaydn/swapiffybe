@@ -1,5 +1,6 @@
 package com.swapiffy.swapiffybe.service;
 
+import com.swapiffy.swapiffybe.ServiceFacade;
 import com.swapiffy.swapiffybe.dao.cart.ICartDao;
 import com.swapiffy.swapiffybe.dao.user.IUserDao;
 import com.swapiffy.swapiffybe.dao.user.UserDaoImpl;
@@ -23,15 +24,19 @@ import java.util.ArrayList;
 @Service
 public class AuthService {
     private final ICartDao cartDao;
+    private  IUserDao userDao=null;
     private final TokenService tokenService;
     private final UserService userService;
     private final UserConverter userConverter;
+
     @Autowired
     public AuthService(ICartDao cartDao, UserService userService, TokenService tokenService, UserConverter userConverter) {
+        userDao = ServiceFacade.getInstance().getUserDao();
         this.cartDao = cartDao;
         this.userService = userService;
         this.tokenService = tokenService;
         this.userConverter = userConverter;
+        userDao = ServiceFacade.getInstance().getUserDao();
 
         if (userService == null || tokenService == null) {
             throw new IllegalArgumentException("userService ve tokenService null olamaz");
@@ -39,14 +44,13 @@ public class AuthService {
 
     }
     public ResponseEntity<LoginResponse> register(UserRegistrationDTO loginForm){
-        IUserDao userDao=new UserDaoImpl();
-      User user=  userDao.save(userConverter.convertToEntity(loginForm));
+        User user=  userDao.save(userConverter.convertToEntity(loginForm));
         Card userCard = cartDao.getCard(user.getId());
         if (userCard==null){
            Card newCard=  new Card();
             newCard.setKullanici(user);
             newCard.setSepetUrunList(new ArrayList<>());
-            cartDao.addCard(newCard);
+            cartDao.AddCard(newCard);
         }
         return null;
     }

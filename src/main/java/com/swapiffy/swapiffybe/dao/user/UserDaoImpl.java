@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserDaoImpl extends BaseDao implements IUserDao {
-
+    @Override
+    public void initialize() {
+        logger.info("User dao implementation is initializing");
+    }
     @Override
     public User save(User user) {
         EntityManager em = null;

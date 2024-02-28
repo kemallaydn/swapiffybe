@@ -69,7 +69,7 @@ yeniUrun.setSepet(kullaniciSepeti);
         }
         // Sepeti güncelle
         kullaniciSepeti.setSepetUrunList(sepetUrunList);
-        cartDao.addCard(kullaniciSepeti);
+        cartDao.AddCard(kullaniciSepeti);
 
         return sepetUrunList;
     }
@@ -84,11 +84,11 @@ yeniUrun.setSepet(kullaniciSepeti);
                 if (sepetUrun.getAdet() == 0) {
                     // Eğer ürünün adeti azaltılan adete eşitse ürünü listeden kaldır
                     sepet.getSepetUrunList().remove(sepetUrun);
-                    cartDao.updateCard(sepetUrun.getId());
+                    cartDao.DeleteCard(sepetUrun.getId());
                     Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
                     return kullaniciSepetiOptional;
                 }
-                cartDao.cardUpdate(sepetUrun);
+                cartDao.UpdateCard(sepetUrun);
                 Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
                 return kullaniciSepetiOptional;
             }
@@ -105,7 +105,7 @@ yeniUrun.setSepet(kullaniciSepeti);
             CardProduct sepetUrun = iterator.next();
             if (sepetUrun.getUrun().getId().equals(urunId)) {
                 iterator.remove(); // Ürünü listeden kaldır
-                cartDao.updateCard(sepetUrun.getId());
+                cartDao.DeleteCard(sepetUrun.getId());
                 Card kullaniciSepetiOptional = cartDao.getCard(sepetId);
                 return kullaniciSepetiOptional;
             }

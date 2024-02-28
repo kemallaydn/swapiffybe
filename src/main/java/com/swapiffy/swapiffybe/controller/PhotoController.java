@@ -1,24 +1,51 @@
 package com.swapiffy.swapiffybe.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/photos")
 public class PhotoController {
 
-    private static final String UPLOAD_FOLDER = "/Users/furkanaydin/Desktop/images"; // Yükleme klasörünü belirtin
+    private static final String UPLOAD_FOLDER = "/Users/furkanaydin/swapiffybe/images"; // Yükleme klasörünü belirtin
+    @Value("${upload-dir}")
+    private String uploadDir;
 
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) {
+        try {
+            // Dosyanın adını benzersiz bir şekilde oluşturun
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            String fileExtension = StringUtils.getFilenameExtension(fileName);
+            String generatedFileName = UUID.randomUUID().toString() + "." + fileExtension;
+
+            // Dosyayı kaydetmek için dosya yolu oluşturun
+            Path filePath = Paths.get(uploadDir + generatedFileName);
+
+            // Dosyayı belirtilen klasöre kaydet
+            Files.copy(file.getInputStream(), filePath);
+
+
+            // Başarıyla yüklendi yanıtı döndürün
+            return ResponseEntity.ok().body("Dosya başarıyla yüklendi: " + generatedFileName);
+        } catch (IOException ex) {
+            return ResponseEntity.badRequest().body("Dosya yükleme hatası: " + ex.getMessage());
+        }
+    }
     @GetMapping("/get")
     public ResponseEntity<Resource> getPhoto(@RequestParam String photoName) {
         try {

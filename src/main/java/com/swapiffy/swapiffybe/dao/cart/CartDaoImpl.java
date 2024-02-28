@@ -36,7 +36,7 @@ public class CartDaoImpl extends BaseDao implements ICartDao {
     }
 
     @Override
-    public Card updateCard(Long id) {
+    public Card DeleteCard(Long id) {
         EntityManager em = openTransactionalConnection();
         Card card=null;
         try {
@@ -62,7 +62,7 @@ public class CartDaoImpl extends BaseDao implements ICartDao {
     }
 
     @Override
-    public void addCard(Card card) {
+    public void AddCard(Card card) {
         EntityManager em = null;
         try {
             em=openTransactionalConnection();
@@ -78,7 +78,7 @@ public class CartDaoImpl extends BaseDao implements ICartDao {
 
     }
     @Override
-    public  void cardUpdate(CardProduct card){
+    public  void UpdateCard(CardProduct card){
         EntityManager em = null;
         try {
             em=openTransactionalConnection();
