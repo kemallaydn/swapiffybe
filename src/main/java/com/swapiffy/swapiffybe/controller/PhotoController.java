@@ -40,7 +40,7 @@ public class PhotoController {
             Files.copy(file.getInputStream(), filePath);
 
 
-            // Başarıyla yüklendi yanıtı döndürün
+            // Başarıyla yüklendi yanıtı döndürünüz
             return ResponseEntity.ok().body("Dosya başarıyla yüklendi: " + generatedFileName);
         } catch (IOException ex) {
             return ResponseEntity.badRequest().body("Dosya yükleme hatası: " + ex.getMessage());
