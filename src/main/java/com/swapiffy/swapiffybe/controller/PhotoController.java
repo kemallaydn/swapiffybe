@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequestMapping("/photos")
 public class PhotoController {
 
-    private static final String UPLOAD_FOLDER = "/Users/furkanaydin/Swapify/swapiffybe/images"; // Yükleme klasörünü belirtin
+    private static final String UPLOAD_FOLDER = "/Users/furkanaydin/swapiffybe/images"; // Yükleme klasörünü belirtin
     @Value("${upload-dir}")
     private String uploadDir;
 
