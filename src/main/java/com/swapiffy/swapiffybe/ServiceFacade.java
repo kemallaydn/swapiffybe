@@ -15,6 +15,13 @@ public class ServiceFacade {
         }
         return instance;
     }
+    ServiceFacade () {
+        try {
+            initializeDao();
+        } catch (Exception ex) {
+            Logger.getLogger(ServiceFacade.class.getName()).severe(ex.toString());
+        }
+    }
     private void initializeDao() throws Exception {
 
         userDao = new UserDaoFactory().getUserDao();
