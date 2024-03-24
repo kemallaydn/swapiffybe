@@ -18,4 +18,9 @@ public class ProductController {
     public List<Product> login() {
         return productService.getAll();
     }
+
+    @GetMapping("/get")
+    public Product getProduct(@RequestParam Long id) {
+        return productService.FindById(id);
+    }
 }

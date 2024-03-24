@@ -15,6 +15,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -37,7 +38,7 @@ public class UserService {
         return user;
     }
 
-    public User getUserById(long kullaniciId) {
+    public User getUserById(UUID kullaniciId) {
 
         IUserDao userDao = new UserDaoImpl();
         User user = userDao.getUserById(kullaniciId);

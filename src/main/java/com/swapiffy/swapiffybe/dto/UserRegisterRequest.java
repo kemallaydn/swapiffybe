@@ -20,6 +20,8 @@ public class UserRegisterRequest {
     @NotBlank(message = "Phone number cannot be blank")
     private String phoneNumber;
 
+
+
     // Getter ve Setter metotları
 
     public String getEmail() {

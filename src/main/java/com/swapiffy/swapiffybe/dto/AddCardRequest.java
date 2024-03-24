@@ -1,15 +1,17 @@
 package com.swapiffy.swapiffybe.dto;
 
+import java.util.UUID;
+
 public class AddCardRequest {
-    private Long kullaniciId;
+    private UUID kullaniciId;
     private Long urunId;
     private int adet;
 
-    public Long getKullaniciId() {
+    public UUID getKullaniciId() {
         return kullaniciId;
     }
 
-    public void setKullaniciId(Long kullaniciId) {
+    public void setKullaniciId(UUID kullaniciId) {
         this.kullaniciId = kullaniciId;
     }
 

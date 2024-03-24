@@ -16,7 +16,7 @@ import java.util.UUID;
 public class CartDaoImpl extends BaseDao implements ICartDao {
 
     @Override
-    public Card getCard(Long id) {
+    public Card getCard(UUID id) {
         EntityManager em = null;
         Card card = null;
         try {

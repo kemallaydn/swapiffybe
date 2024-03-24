@@ -1,5 +1,6 @@
 package com.swapiffy.swapiffybe.controller;
 
+import com.swapiffy.swapiffybe.dto.AdvertisementDto;
 import com.swapiffy.swapiffybe.entity.Advertisement;
 import com.swapiffy.swapiffybe.service.AdvertisementService;
 import org.apache.log4j.Logger;
@@ -23,14 +24,21 @@ public class AdvertisementController {
     }
 
     @PostMapping("/add")
-    public void createAdvertisement(@RequestBody Advertisement advertisement) {
-       advertisementService.saveAdvertisement(advertisement);
-       System.out.println("Advertisement saved");
+    public Advertisement createAdvertisement(@RequestBody Advertisement advertisement) {
+        System.out.println(advertisement.getUserid());
+       return advertisementService.saveAdvertisement(advertisement);
     }
     @GetMapping("/getAdvertisement")
     public List<Advertisement> getAdvertisement(@RequestParam Long id) {
         logger.info("Advertisement get");
         List<Advertisement> savedAdvertisement = advertisementService.getAdvertisement(id);
+        System.out.println("Advertisement get");
+        return savedAdvertisement;
+    }
+    @GetMapping("/getAllAdvertisement")
+    public List<Advertisement> getAllAdvertisement() {
+        logger.info("Advertisement get");
+        List<Advertisement> savedAdvertisement = advertisementService.getAllAdvertisement();
         System.out.println("Advertisement get");
         return savedAdvertisement;
     }

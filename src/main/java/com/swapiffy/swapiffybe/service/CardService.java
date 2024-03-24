@@ -27,12 +27,12 @@ public class CardService {
         this.cartDao= new CartDaoImpl();
 
     }
-    public Card runGetting(Long kullaniciId){
+    public Card runGetting(UUID kullaniciId){
 
         Card kullaniciSepetiOptional = cartDao.getCard(kullaniciId);
         return  kullaniciSepetiOptional;
     }
-    public List<CardProduct> sepeteUrunEkle(Long kullaniciId, Long urunId, int adet) {
+    public List<CardProduct> sepeteUrunEkle(UUID kullaniciId, Long urunId, int adet) {
         // Kullanıcıya ait sepeti bul
         Card kullaniciSepetiOptional = cartDao.getCard(kullaniciId);
 
@@ -75,7 +75,7 @@ yeniUrun.setSepet(kullaniciSepeti);
     }
 
 
-    public Card azaltUrunAdet(Long sepetId, Long urunId, int azaltilanAdet) {
+    public Card azaltUrunAdet(UUID sepetId, Long urunId, int azaltilanAdet) {
         Card sepet = cartDao.getCard(sepetId);
         for (CardProduct sepetUrun : sepet.getSepetUrunList()) {
             if (sepetUrun.getUrun().getId().equals(urunId)) {
@@ -97,7 +97,7 @@ yeniUrun.setSepet(kullaniciSepeti);
         throw new RuntimeException("Belirtilen ürün sepetinizde bulunmamaktadır.");
     }
     @Transactional
-    public Card urunsil(Long sepetId, Long urunId, int azaltilanAdet) {
+    public Card urunsil(UUID sepetId, Long urunId, int azaltilanAdet) {
         Card sepet = cartDao.getCard(sepetId);
 
         Iterator<CardProduct> iterator = sepet.getSepetUrunList().iterator();

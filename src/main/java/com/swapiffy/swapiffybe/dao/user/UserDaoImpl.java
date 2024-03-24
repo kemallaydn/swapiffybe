@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
 public class UserDaoImpl extends BaseDao implements IUserDao {
     @Override
@@ -14,7 +16,7 @@ public class UserDaoImpl extends BaseDao implements IUserDao {
     }
     @Override
     public User save(User user) {
-        EntityManager em = null;
+        EntityManager em =null;
         try {
             em=openTransactionalConnection();
             em.persist(user);
@@ -49,7 +51,7 @@ public class UserDaoImpl extends BaseDao implements IUserDao {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(UUID id) {
         EntityManager em = null;
         User user = null;
         try {

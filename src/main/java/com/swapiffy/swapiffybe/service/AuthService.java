@@ -43,20 +43,16 @@ public class AuthService {
         }
 
     }
-    public ResponseEntity<LoginResponse> register(UserRegistrationDTO loginForm){
-        User user=  userDao.save(userConverter.convertToEntity(loginForm));
-        Card userCard = cartDao.getCard(user.getId());
-        if (userCard==null){
-           Card newCard=  new Card();
-            newCard.setKullanici(user);
-            newCard.setSepetUrunList(new ArrayList<>());
-            cartDao.AddCard(newCard);
-        }
-        return null;
+    public void register(User user) {
+        LocalDateTime now = LocalDateTime.now();
+        user.setRegistrationDate(now.toString());
+        user.setAccountStatus("ACTIVE");
+        userDao.save(user);
     }
     public ResponseEntity<Object> login(UserLoginDTO userLoginDTO) {
         String token = null;
-        User authenticatedUser = userService.authenticateUser(userLoginDTO.getEmail(), userLoginDTO.getPassword());
+        User authenticatedUser = userDao.getUserByEmail(userLoginDTO.getEmail());
+
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime oneHourLater = now.plus(1, ChronoUnit.HOURS);
 
@@ -64,13 +60,17 @@ public class AuthService {
             token = tokenService.generateToken(userLoginDTO.getEmail());
             IUserTokenDao userTokenDao = new UserTokenImpl();
             UserToken userToken = new UserToken();
-            userToken.setToken(token);
-            userToken.setUser(authenticatedUser.getId());
-            userToken.setExpirationTime(oneHourLater);
-            userTokenDao.save(userToken);
-
-            LoginResponse loginResponse = new LoginResponse(token, authenticatedUser);
-
+            userToken.setTokenValue(token);
+            userToken.setUserId(authenticatedUser.getId());
+            userToken.setLastUsageDate(oneHourLater);
+            userToken.setCreationDate(now);
+            UserLoginResponse loginResponse = new UserLoginResponse();
+            loginResponse.setToken(token);
+            loginResponse.setSurname(authenticatedUser.getLastName());
+            loginResponse.setName(authenticatedUser.getFirstName());
+            loginResponse.setEmail(authenticatedUser.getEmail());
+            loginResponse.setId(authenticatedUser.getId());
+            loginResponse.setToken(token);
             return ResponseEntity.ok(loginResponse);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
